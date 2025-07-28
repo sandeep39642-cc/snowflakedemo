@@ -40,11 +40,11 @@ jobs:
 
     - name: Run SQL query using Snowflake CLI (try with sf)
       run: |
-         snow query --name demo --sql "CREATE OR REPLACE TABLE demo_employees (
-          id INT,
-          name STRING,
-          role STRING,
-          start_date DATE,
-          salary NUMBER(10,2)
-          );"
+        snow sql --name demo --query "CREATE OR REPLACE TABLE demo_employees (
+        id INT,
+        name STRING,
+        role STRING,
+        start_date DATE,
+        salary NUMBER(10,2)
+        );"
       
