@@ -17,7 +17,13 @@ jobs:
         default-config-file-path: ".snowflake/config.toml"
         
     - name: Add pipx binaries to PATH
-      run: echo "/opt/pipx_bin/snow_pipx_path" >> $GITHUB_PATH
+      run: |
+        echo "/opt/pipx_bin/snow_pipx_path" >> $GITHUB_PATH
+
+    - name: Verify sf CLI is installed and on PATH
+      run: |
+        which sf
+        sf --version
 
 
     # - name: Check Snowflake CLI version
