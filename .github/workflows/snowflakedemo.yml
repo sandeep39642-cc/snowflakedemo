@@ -8,36 +8,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install snowflake-cli
+    - name: Install Snowflake CLI (sf)
       uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
         cli-version: "latest"
         default-config-file-path: ".snowflake/config.toml"
 
-    - name: Add SnowSQL to PATH
-      run: echo "$HOME/.snowsql" >> $GITHUB_PATH
-
-    - name: Run SQL Query on Snowflake (Demo)
-      env:
-        SNOWFLAKE_ACCOUNT: ${{ secrets.DEMO_SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_USER: ${{ secrets.DEMO_SNOWFLAKE_USER }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.DEMO_SNOWFLAKE_PASSWORD }}
-        SNOWFLAKE_ROLE: ${{ secrets.DEMO_SNOWFLAKE_ROLE }}
-        SNOWFLAKE_WAREHOUSE: ${{ secrets.DEMO_SNOWFLAKE_WAREHOUSE }}
-        SNOWFLAKE_DATABASE: ${{ secrets.DEMO_SNOWFLAKE_DATABASE }}
-        SNOWFLAKE_SCHEMA: ${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}
+    - name: Set up Snowflake CLI config
       run: |
-        ~/.snowsql/snowsql -a $SNOWFLAKE_ACCOUNT \
-          -u $SNOWFLAKE_USER \
-          -p $SNOWFLAKE_PASSWORD \
-          -r $SNOWFLAKE_ROLE \
-          -w $SNOWFLAKE_WAREHOUSE \
-          -d $SNOWFLAKE_DATABASE \
-          -s $SNOWFLAKE_SCHEMA \
-          -q "CREATE OR REPLACE TABLE demo_employees (
-                id INT,
-                name STRING,
-                role STRING,
-                start_date DATE,
-                salary NUMBER(10,2)
-              );"
+        mkdir -p .snowflake
+        cat > .snowflake/config.toml <<EOF
+        [connections.demo]
+        account = "${{ secrets.DEMO_SNOWFLAKE_ACCOUNT }}"
+        username = "${{ secrets.DEMO_SNOWFLAKE_USER }}"
+        password = "${{ secrets.DEMO_SNOWFLAKE_PASSWORD }}"
+        role = "${{ secrets.DEMO_SNOWFLAKE_ROLE }}"
+        warehouse = "${{ secrets.DEMO_SNOWFLAKE_WAREHOUSE }}"
+        database = "${{ secrets.DEMO_SNOWFLAKE_DATABASE }}"
+        schema = "${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}"
+        EOF
+
+    - name: Run SQL query using sf CLI
+      run: |
+        sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
+          id INT,
+          name STRING,
+          role STRING,
+          start_date DATE,
+          salary NUMBER(10,2)
+        );"
