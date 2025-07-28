@@ -44,19 +44,33 @@ jobs:
 
    
     
-    - name: Run SQL using Snowflake CLI v3
-      env: 
-        SNOWFLAKE_CONFIG_FILE: ${{ github.workspace }}/.snowflake/config.toml
+    # - name: Run SQL using Snowflake CLI v3
+    #   env: 
+    #     SNOWFLAKE_CONFIG_FILE: ${{ github.workspace }}/.snowflake/config.toml
+    #   run: |
+    #     snow sql \
+    #       --connection demo \
+    #       --query "CREATE OR REPLACE TABLE demo_employees (
+    #         id INT,
+    #         name STRING,
+    #         role STRING,
+    #         start_date DATE,
+    #         salary NUMBER(10,2)
+    #       );"
+
+    - name: Move config to home
       run: |
-        snow sql \
-          --connection demo \
-          --query "CREATE OR REPLACE TABLE demo_employees (
-            id INT,
-            name STRING,
-            role STRING,
-            start_date DATE,
-            salary NUMBER(10,2)
-          );"
+        mkdir -p ~/.snowflake
+        cp .snowflake/config.toml ~/.snowflake/config.toml
 
-
-      
+    - name: Run SQL query
+      run: |
+        snow sql --connection demo --query "CREATE OR REPLACE TABLE demo_employees (
+          id INT,
+          name STRING,
+          role STRING,
+          start_date DATE,
+          salary NUMBER(10,2)
+        );"
+    
+          
