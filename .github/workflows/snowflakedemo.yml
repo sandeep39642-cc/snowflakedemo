@@ -63,6 +63,9 @@ jobs:
         mkdir -p ~/.snowflake
         cp .snowflake/config.toml ~/.snowflake/config.toml
 
+    - name: Debug config (check username is set)
+      run: grep 'username' ~/.snowflake/config.toml
+
 
     - name: Fix config file permissions
       run: chmod 600 ~/.snowflake/config.toml
