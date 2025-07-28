@@ -34,6 +34,14 @@ jobs:
         EOF
         chmod 600 ~/.snowflake/config.toml
 
-    - name: Run Snowpipe SQL file
+    - name: Create Snowpipe SQL file
       run: |
         snow sql --connection demo --file scripts/snowpipe.sql
+
+    - name: Trigger Snowpipe Manually
+      run: |
+        snow sql \
+          --connection demo \
+          --query "
+            ALTER PIPE demo_pipe REFRESH;
+          "
