@@ -2,11 +2,15 @@ name: Snowflake Query in Demo Env
 
 on:
   workflow_dispatch:
+  
 
 jobs:
   run-snowflake-query:
     runs-on: ubuntu-latest
+    env:
+      SQL_FILE_PATH: scripts/init_table.sql
     environment: Demo
+    
 
     steps:
     - name: Install Snowflake CLI using pipx
@@ -47,4 +51,4 @@ jobs:
 
     - name: Run SQL File
       run: |
-        snow sql --connection demo --filename scripts/init_table.sql
+        snow sql --connection demo --filename "$SQL_FILE_PATH"
