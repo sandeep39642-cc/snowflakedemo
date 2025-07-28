@@ -6,6 +6,7 @@ on:
 jobs:
   run-snowflake-query:
     runs-on: ubuntu-latest
+    environment: demo
 
     steps:
     - name: Install Snowflake CLI
