@@ -30,6 +30,12 @@ jobs:
         schema = "${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}"
         EOF
 
+    - name: Debug Show install path
+      run: | 
+        echo "Installed at: ${{ steps.install_sf.outputs.install-dir }}"
+
+
+
     - name: Run SQL query using Snowflake CLI
       run: |
         "${{ steps.install_sf.outputs.install-dir }}/sf" -c demo query "CREATE OR REPLACE TABLE demo_employees (
