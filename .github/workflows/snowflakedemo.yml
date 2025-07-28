@@ -6,7 +6,7 @@ on:
 jobs:
   run-snowflake-query:
     runs-on: ubuntu-latest
-    environment: Demo  # Ensure your GitHub environment is exactly named "Demo"
+    environment: Demo  
 
     steps:
     - name: Install Snowflake CLI using Action
@@ -25,13 +25,13 @@ jobs:
         mkdir -p .snowflake
         cat > .snowflake/config.toml <<EOF
         [connections.demo]
-        account = "${{ secrets.DEMO_SNOWFLAKE_ACCOUNT }}"
-        username = "${{ secrets.DEMO_SNOWFLAKE_USER }}"
-        password = "${{ secrets.DEMO_SNOWFLAKE_PASSWORD }}"
-        role = "${{ secrets.DEMO_SNOWFLAKE_ROLE }}"
-        warehouse = "${{ secrets.DEMO_SNOWFLAKE_WAREHOUSE }}"
-        database = "${{ secrets.DEMO_SNOWFLAKE_DATABASE }}"
-        schema = "${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}"
+        account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+        username = "${{ secrets.SNOWFLAKE_USER }}"
+        password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
+        role = "${{ secrets.SNOWFLAKE_ROLE }}"
+        warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+        database = "${{ secrets.SNOWFLAKE_DATABASE }}"
+        schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
         EOF
 
     - name: Confirm sf is in PATH
