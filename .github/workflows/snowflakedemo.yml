@@ -43,7 +43,6 @@ jobs:
         SNOWFLAKE_CONFIG_FILE: .snowflake/config.toml
       run: |
         snow sql \
-          --connection demo \
           --query "CREATE OR REPLACE TABLE demo_employees (
             id INT,
             name STRING,
