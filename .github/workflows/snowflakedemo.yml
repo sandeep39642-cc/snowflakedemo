@@ -53,31 +53,4 @@ jobs:
           start_date DATE,
           salary NUMBER(10,2)
         );"
-      continue-on-error: true
-
-    - name: Run SQL query using Snowflake CLI (absolute path fallback)
-      if: failure()
-      run: |
-        "${{ steps.install_sf.outputs.install-dir }}/sf" -c demo query "CREATE OR REPLACE TABLE demo_employees (
-          id INT,
-          name STRING,
-          role STRING,
-          start_date DATE,
-          salary NUMBER(10,2)
-        );"
-
-    - name: Fallback manual install Snowflake CLI via pip
-      if: failure()
-      run: |
-        python3 -m pip install --upgrade snowflake-cli
-
-    - name: Run SQL query using manually installed CLI (fallback)
-      if: failure()
-      run: |
-        sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
-          id INT,
-          name STRING,
-          role STRING,
-          start_date DATE,
-          salary NUMBER(10,2)
-        );"
+      
