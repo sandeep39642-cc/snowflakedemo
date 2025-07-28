@@ -1,31 +1,42 @@
-name: Run Snowflake Query
+name: Snowflake Query in Demo Env
 
 on:
-  workflow_dispatch:  # manually trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
-  run-query:
+  run-snowflake-query:
     runs-on: ubuntu-latest
 
     steps:
     - name: Install SnowSQL
       run: |
         curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.21-linux_x86_64.bash
-        bash snowsql-1.2.21-linux_x86_64.bash
+        bash snowsql-1.2.21-linux_x86_64.bash --yes
 
     - name: Add SnowSQL to PATH
       run: echo "$HOME/.snowsql" >> $GITHUB_PATH
 
-    - name: Run SQL Query
+    - name: Run SQL Query on Snowflake (Demo)
       env:
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-        SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-        SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
-        SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+        SNOWFLAKE_ACCOUNT: ${{ secrets.DEMO_SNOWFLAKE_ACCOUNT }}
+        SNOWFLAKE_USER: ${{ secrets.DEMO_SNOWFLAKE_USER }}
+        SNOWFLAKE_PASSWORD: ${{ secrets.DEMO_SNOWFLAKE_PASSWORD }}
+        SNOWFLAKE_ROLE: ${{ secrets.DEMO_SNOWFLAKE_ROLE }}
+        SNOWFLAKE_WAREHOUSE: ${{ secrets.DEMO_SNOWFLAKE_WAREHOUSE }}
+        SNOWFLAKE_DATABASE: ${{ secrets.DEMO_SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_SCHEMA: ${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}
       run: |
-        ~/.snowsql/snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USER -r $SNOWFLAKE_ROLE \
-        -w $SNOWFLAKE_WAREHOUSE -d $SNOWFLAKE_DATABASE -s $SNOWFLAKE_SCHEMA \
-        -q "SELECT CURRENT_TIMESTAMP, CURRENT_USER;"
+        ~/.snowsql/snowsql -a $SNOWFLAKE_ACCOUNT \
+          -u $SNOWFLAKE_USER \
+          -p $SNOWFLAKE_PASSWORD \
+          -r $SNOWFLAKE_ROLE \
+          -w $SNOWFLAKE_WAREHOUSE \
+          -d $SNOWFLAKE_DATABASE \
+          -s $SNOWFLAKE_SCHEMA \
+          -q "CREATE OR REPLACE TABLE demo_employees (
+                id INT,
+                name STRING,
+                role STRING,
+                start_date DATE,
+                salary NUMBER(10,2)
+              );"
