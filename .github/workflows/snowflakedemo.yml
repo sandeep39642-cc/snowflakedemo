@@ -47,4 +47,4 @@ jobs:
 
     - name: Run SQL File
       run: |
-        snow sql --connection demo --file scripts/init_table.sql
+        snow sql --connection demo --filename scripts/init_table.sql
