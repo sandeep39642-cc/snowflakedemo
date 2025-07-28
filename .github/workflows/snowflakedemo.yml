@@ -16,6 +16,10 @@ jobs:
         cli-version: "latest"
         default-config-file-path: ".snowflake/config.toml"
 
+    - name: Check Snowflake CLI version
+      run: sf --version
+
+
 
 
     # - name: Add sf CLI to PATH
