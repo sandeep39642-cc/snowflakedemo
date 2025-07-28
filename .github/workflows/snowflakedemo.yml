@@ -36,9 +36,12 @@ jobs:
 
 
 
+    - name: Add sf CLI to PATH
+      run: echo "${{ steps.install_sf.outputs.install-dir }}" >> $GITHUB_PATH
+
     - name: Run SQL query using Snowflake CLI
       run: |
-        "${{ steps.install_sf.outputs.install-dir }}/sf" -c demo query "CREATE OR REPLACE TABLE demo_employees (
+        sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
           id INT,
           name STRING,
           role STRING,
