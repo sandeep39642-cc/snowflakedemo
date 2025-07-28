@@ -19,13 +19,14 @@ jobs:
         mkdir -p ~/.snowflake
         cat > ~/.snowflake/config.toml <<EOF
         [connections.demo]
-        account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
-        username = "${{ secrets.SNOWFLAKE_USER }}"
+        [connections.my_example_connection]
+        account = "RHMDJPI-XY35622"
+        user = "SANDEEP39642"
         password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
-        role = "${{ secrets.SNOWFLAKE_ROLE }}"
-        warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
-        database = "${{ secrets.SNOWFLAKE_DATABASE }}"
-        schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
+        role = "ACCOUNTADMIN"
+        warehouse = "SNOWFLAKE_LEARNING_WH"
+        database = "SNOWFLAKE_LEARNING_DB"
+        schema = "SNOWFLAKEDEMOSCHEMA"
         EOF
            chmod 600 ~/.snowflake/config.toml
 
