@@ -28,7 +28,7 @@ jobs:
         cat > .snowflake/config.toml <<EOF
         [connections.demo]
         account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
-        username = "${{ secrets.SNOWFLAKE_USER }}"
+        username = "SANDEEP39642"
         password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
         role = "${{ secrets.SNOWFLAKE_ROLE }}"
         warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
