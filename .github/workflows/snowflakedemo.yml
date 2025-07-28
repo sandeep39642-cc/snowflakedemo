@@ -9,9 +9,12 @@ jobs:
     environment: Demo  
 
     steps:
-    - name: Install Snowflake CLI manually via pip
-      run: |
-        python3 -m pip install --upgrade snowflake-cli
+    - name: Install Snowflake CLI using Action
+      id: install_sf
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+        default-config-file-path: ".snowflake/config.toml"
 
 
 
