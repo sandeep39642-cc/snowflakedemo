@@ -16,13 +16,6 @@ jobs:
         cli-version: "latest"
         default-config-file-path: ".snowflake/config.toml"
 
-    - name: Debug Show install-dir output
-      run: |
-        echo "Install dir is: '${{ steps.install_sf.outputs.install-dir }}'"
-
-    - name: Debug List install-dir contents
-      run: |
-        ls -l "${{ steps.install_sf.outputs.install-dir }}"
 
     - name: Add sf CLI to PATH
       run: echo "${{ steps.install_sf.outputs.install-dir }}" >> $GITHUB_PATH
