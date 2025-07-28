@@ -30,7 +30,7 @@ jobs:
 
     - name: Run SQL query using sf CLI
       run: |
-        sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
+        ${{ steps.install_sf.outputs.install-dir }}/sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
           id INT,
           name STRING,
           role STRING,
