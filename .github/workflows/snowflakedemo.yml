@@ -30,13 +30,6 @@ jobs:
         EOF
            chmod 600 ~/.snowflake/config.toml
 
-    - name: Debug config file
-      run: |
-        echo "File content:"
-        cat ~/.snowflake/config.toml
-        echo "Checking sf CLI version and path:"
-        which snow
-        snow --version
 
     - name: Run SQL using Snowflake CLI
       run: |
@@ -47,3 +40,7 @@ jobs:
           start_date DATE,
           salary NUMBER(10,2)
         );"
+
+    - name: Run SQL File
+      run: |
+        snow sql --connection demo --file scripts/init_table.sql
