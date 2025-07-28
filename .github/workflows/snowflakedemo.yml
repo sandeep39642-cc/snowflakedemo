@@ -63,6 +63,10 @@ jobs:
         mkdir -p ~/.snowflake
         cp .snowflake/config.toml ~/.snowflake/config.toml
 
+
+    - name: Fix config file permissions
+      run: chmod 600 ~/.snowflake/config.toml
+
     - name: Run SQL query
       run: |
         snow sql --connection demo --query "CREATE OR REPLACE TABLE demo_employees (
