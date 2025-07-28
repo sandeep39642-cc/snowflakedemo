@@ -20,10 +20,18 @@ jobs:
       run: |
         echo "/opt/pipx_bin/snow_pipx_path" >> $GITHUB_PATH
 
-    - name: Verify sf CLI is installed and on PATH
+    - name: Debug sf CLI availability
       run: |
-        which sf
-        sf --version
+        echo "Current PATH: $PATH"
+        if command -v sf >/dev/null 2>&1; then
+          echo "sf found at: $(which sf)"
+          sf --version
+        else
+          echo "sf command NOT found"
+        fi
+        echo "Contents of pipx binary directory:"
+        ls -l /opt/pipx_bin/snow_pipx_path || echo "Directory not found"
+
 
 
     # - name: Check Snowflake CLI version
