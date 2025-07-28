@@ -39,8 +39,7 @@ jobs:
         schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
         EOF
 
-    - name: Confirm sf is in PATH
-      run: which sf || echo "sf command NOT found in PATH"
+   
 
     - name: Run SQL query using Snowflake CLI (try with sf)
       run: |
