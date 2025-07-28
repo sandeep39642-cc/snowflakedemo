@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install SnowSQL
-      run: |
-        curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.21-linux_x86_64.bash
-        bash snowsql-1.2.21-linux_x86_64.bash --yes
+    - name: Install snowflake-cli
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+        default-config-file-path: ".snowflake/config.toml"
 
     - name: Add SnowSQL to PATH
       run: echo "$HOME/.snowsql" >> $GITHUB_PATH
