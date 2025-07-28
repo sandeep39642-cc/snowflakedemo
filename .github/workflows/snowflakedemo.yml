@@ -20,8 +20,8 @@ jobs:
       run: echo "/opt/pipx_bin/snow_pipx_path" >> $GITHUB_PATH
 
 
-    - name: Check Snowflake CLI version
-      run: sf --version
+    # - name: Check Snowflake CLI version
+    #   run: sf --version
 
 
 
