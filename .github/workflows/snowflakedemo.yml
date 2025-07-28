@@ -22,7 +22,6 @@ jobs:
         account = "RHMDJPI-XY35622"
         user = "SANDEEP39642"
         password = "Welcome@23071995"
-        authenticator = "externalbrowser"
         role = "ACCOUNTADMIN"
         warehouse = "SNOWFLAKE_LEARNING_WH"
         database = "SNOWFLAKE_LEARNING_DB"
