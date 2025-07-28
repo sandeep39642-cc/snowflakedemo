@@ -16,6 +16,9 @@ jobs:
         cli-version: "latest"
         default-config-file-path: ".snowflake/config.toml"
 
+    - name: Add sf CLI to PATH
+      run: echo "${{ steps.install_sf.outputs.install-dir }}" >> $GITHUB_PATH
+
     - name: Set up Snowflake config.toml
       run: |
         mkdir -p .snowflake
@@ -35,9 +38,6 @@ jobs:
         echo "Installed at: ${{ steps.install_sf.outputs.install-dir }}"
 
 
-
-    - name: Add sf CLI to PATH
-      run: echo "${{ steps.install_sf.outputs.install-dir }}" >> $GITHUB_PATH
 
     - name: Run SQL query using Snowflake CLI
       run: |
