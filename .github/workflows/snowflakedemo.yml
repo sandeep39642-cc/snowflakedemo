@@ -39,6 +39,8 @@ jobs:
    
 
     - name: Run SQL using Snowflake CLI v3
+      env: 
+        SNOWFLAKE_CONFIG_FILE: .snowflake/config.toml
       run: |
         snow sql \
           --connection demo \
