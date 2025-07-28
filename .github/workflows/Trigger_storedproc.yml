@@ -1,0 +1,46 @@
+name: Trigger Snowflake Task or Stored Procedure
+
+on:
+  workflow_dispatch:  # allows manual run from GitHub UI
+
+jobs:
+  run-snowflake-task-or-sp:
+    runs-on: ubuntu-latest
+    environment: Demo
+
+    steps:
+    - name: Install Snowflake CLI
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+
+    - name: Add pipx bin to PATH
+      run: echo "/opt/pipx_bin" >> $GITHUB_PATH
+
+    - name: Set up Snowflake config
+      run: |
+        mkdir -p ~/.snowflake
+        cat > ~/.snowflake/config.toml <<EOF
+        [connections.demo]
+        account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+        username = "${{ secrets.SNOWFLAKE_USER }}"
+        password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
+        role = "${{ secrets.SNOWFLAKE_ROLE }}"
+        warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+        database = "${{ secrets.SNOWFLAKE_DATABASE }}"
+        schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
+        EOF
+        chmod 600 ~/.snowflake/config.toml
+
+    - name: Trigger Snowflake Stored Procedure
+      run: |
+        snow sql \
+          --connection demo \
+          --query "CALL my_etl_procedure();"
+
+    # OR trigger a task manually
+    # - name: Trigger Snowflake Task
+    #   run: |
+    #     snow sql \
+    #       --connection demo \
+    #       --query "ALTER TASK my_task_name RESUME; EXECUTE TASK my_task_name;"
