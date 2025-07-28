@@ -36,13 +36,20 @@ jobs:
         schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
         EOF
 
-   
+    - name: Debug config.toml contents and pwd
+      run: |
+        pwd
+        ls -l .snowflake/
+        cat .snowflake/config.toml 
 
+   
+    
     - name: Run SQL using Snowflake CLI v3
       env: 
         SNOWFLAKE_CONFIG_FILE: .snowflake/config.toml
       run: |
         snow sql \
+          --connection demo \
           --query "CREATE OR REPLACE TABLE demo_employees (
             id INT,
             name STRING,
