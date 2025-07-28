@@ -6,26 +6,18 @@ on:
 jobs:
   run-snowflake-query:
     runs-on: ubuntu-latest
-    environment: Demo  
+    environment: Demo
 
     steps:
-    - name: Install Snowflake CLI using Action
-      id: install_sf
-      uses: Snowflake-Labs/snowflake-cli-action@v1.5
-      with:
-        cli-version: "latest"
-        default-config-file-path: ".snowflake/config.toml"
-        
-    - name: Add pipx binaries to PATH
+    - name: Install Snowflake CLI using pipx
       run: |
-        echo "/opt/pipx_bin/snow_pipx_path" >> $GITHUB_PATH
+        pipx install snowflake-cli
+        echo "/opt/pipx_bin" >> $GITHUB_PATH
 
-  
-
-    - name: Set up Snowflake config.toml
+    - name: Create Snowflake config at ~/.snowflake/config.toml
       run: |
-        mkdir -p .snowflake
-        cat > .snowflake/config.toml <<EOF
+        mkdir -p ~/.snowflake
+        cat > ~/.snowflake/config.toml <<EOF
         [connections.demo]
         account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
         username = "${{ secrets.SNOWFLAKE_USER }}"
@@ -35,18 +27,17 @@ jobs:
         database = "${{ secrets.SNOWFLAKE_DATABASE }}"
         schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
         EOF
+        chmod 600 ~/.snowflake/config.toml
 
-
-    - name: Move config to home
+    - name: Debug config file
       run: |
-        mkdir -p ~/.snowflake
-        cp .snowflake/config.toml ~/.snowflake/config.toml
+        echo "File content:"
+        cat ~/.snowflake/config.toml
+        echo "Checking sf CLI version and path:"
+        which snow
+        snow --version
 
-
-    - name: Fix config file permissions
-      run: chmod 600 ~/.snowflake/config.toml
-
-    - name: Run SQL query
+    - name: Run SQL using Snowflake CLI
       run: |
         snow sql --connection demo --query "CREATE OR REPLACE TABLE demo_employees (
           id INT,
@@ -55,5 +46,3 @@ jobs:
           start_date DATE,
           salary NUMBER(10,2)
         );"
-    
-          
