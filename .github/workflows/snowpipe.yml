@@ -1,0 +1,39 @@
+name: Create and Trigger Snowpipe from SQL File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-snowpipe-sql:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install Snowflake CLI
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+
+    - name: Add pipx bin to PATH
+      run: echo "/opt/pipx_bin" >> $GITHUB_PATH
+
+    - name: Set up Snowflake config
+      run: |
+        mkdir -p ~/.snowflake
+        cat > ~/.snowflake/config.toml <<EOF
+        [connections.demo]
+        account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+        username = "${{ secrets.SNOWFLAKE_USER }}"
+        password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
+        role = "${{ secrets.SNOWFLAKE_ROLE }}"
+        warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+        database = "${{ secrets.SNOWFLAKE_DATABASE }}"
+        schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
+        EOF
+        chmod 600 ~/.snowflake/config.toml
+
+    - name: Run Snowpipe SQL file
+      run: |
+        snow sql --connection demo --file scripts/snowpipe.sql
