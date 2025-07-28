@@ -13,13 +13,11 @@ jobs:
       run: |
         pipx install snowflake-cli
         echo "/opt/pipx_bin" >> $GITHUB_PATH
-
     - name: Create Snowflake config at ~/.snowflake/config.toml
       run: |
         mkdir -p ~/.snowflake
         cat > ~/.snowflake/config.toml <<EOF
         [connections.demo]
-        [connections.my_example_connection]
         account = "RHMDJPI-XY35622"
         user = "SANDEEP39642"
         password = "Welcome@23071995"
@@ -29,8 +27,14 @@ jobs:
         schema = "SNOWFLAKEDEMOSCHEMA"
         EOF
            chmod 600 ~/.snowflake/config.toml
-
-
+    - name: Debug config file
+      run: |
+        echo "File content:"
+        cat ~/.snowflake/config.toml
+        echo "Checking sf CLI version and path:"
+        which snow
+        snow --version
+    
     - name: Run SQL using Snowflake CLI
       run: |
         snow sql --connection demo --query "CREATE OR REPLACE TABLE demo_employees (
