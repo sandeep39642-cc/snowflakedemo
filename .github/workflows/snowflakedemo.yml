@@ -41,7 +41,6 @@ jobs:
     - name: Run SQL using Snowflake CLI v3
       run: |
         snow sql \
-          --config-file .snowflake/config.toml \
           --connection demo \
           --query "CREATE OR REPLACE TABLE demo_employees (
             id INT,
@@ -50,5 +49,6 @@ jobs:
             start_date DATE,
             salary NUMBER(10,2)
           );"
+
 
       
