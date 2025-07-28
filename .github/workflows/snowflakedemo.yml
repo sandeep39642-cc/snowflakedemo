@@ -28,7 +28,7 @@ jobs:
         cat > .snowflake/config.toml <<EOF
         [connections.demo]
         account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
-        username = "SANDEEP39642"
+        username = "${{ secrets.SNOWFLAKE_USER }}"
         password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
         role = "${{ secrets.SNOWFLAKE_ROLE }}"
         warehouse = "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
@@ -36,35 +36,11 @@ jobs:
         schema = "${{ secrets.SNOWFLAKE_SCHEMA }}"
         EOF
 
-    - name: Debug config.toml contents and pwd
-      run: |
-        pwd
-        ls -l .snowflake/
-        cat .snowflake/config.toml 
-
-   
-    
-    # - name: Run SQL using Snowflake CLI v3
-    #   env: 
-    #     SNOWFLAKE_CONFIG_FILE: ${{ github.workspace }}/.snowflake/config.toml
-    #   run: |
-    #     snow sql \
-    #       --connection demo \
-    #       --query "CREATE OR REPLACE TABLE demo_employees (
-    #         id INT,
-    #         name STRING,
-    #         role STRING,
-    #         start_date DATE,
-    #         salary NUMBER(10,2)
-    #       );"
 
     - name: Move config to home
       run: |
         mkdir -p ~/.snowflake
         cp .snowflake/config.toml ~/.snowflake/config.toml
-
-    - name: Debug config (check username is set)
-      run: grep 'username' ~/.snowflake/config.toml
 
 
     - name: Fix config file permissions
