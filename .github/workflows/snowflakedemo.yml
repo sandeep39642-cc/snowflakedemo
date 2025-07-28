@@ -8,13 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Snowflake CLI (sf)
+    - name: Install Snowflake CLI
+      id: install_sf
       uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
         cli-version: "latest"
         default-config-file-path: ".snowflake/config.toml"
 
-    - name: Set up Snowflake CLI config
+    - name: Set up Snowflake config.toml
       run: |
         mkdir -p .snowflake
         cat > .snowflake/config.toml <<EOF
@@ -28,9 +29,9 @@ jobs:
         schema = "${{ secrets.DEMO_SNOWFLAKE_SCHEMA }}"
         EOF
 
-    - name: Run SQL query using sf CLI
+    - name: Run SQL query using Snowflake CLI
       run: |
-        ${{ steps.install_sf.outputs.install-dir }}/sf -c demo query "CREATE OR REPLACE TABLE demo_employees (
+        "${{ steps.install_sf.outputs.install-dir }}/sf" -c demo query "CREATE OR REPLACE TABLE demo_employees (
           id INT,
           name STRING,
           role STRING,
