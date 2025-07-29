@@ -38,6 +38,9 @@ jobs:
         echo "Checking sf CLI version and path:"
         which snow
         snow --version
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
     
     - name: Run SQL using Snowflake CLI
       run: |
